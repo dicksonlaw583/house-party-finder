@@ -1,0 +1,76 @@
+<% content_for :head do %>
+	<style>
+		#profile-frag-container {
+			display: block;
+			float: left;
+		}
+
+		#profile-frag-container h1 {
+			font-size: 1.6em;
+			font-weight: bold;
+			margin-bottom: 0.6em;
+		}
+
+		#profile-frag-container ul {
+			margin-top: 1em;
+		}
+
+		#profile-frag-container ul li {
+			margin-top: 0.2em;
+		}
+
+		#map_canvas {
+			float: right;
+			width: 280px;
+			height: 280px;
+		}
+
+		@media (max-width: 800px) {
+			#map_canvas {
+				float: left;
+			}
+		}
+	</style>
+
+	<script src="https://maps.googleapis.com/maps/api/js"></script>
+	<script>
+		google.maps.event.addDomListener(window, 'load', function() {
+			var pos = new google.maps.LatLng(<%= @user.latitude %>, <%= @user.longitude %>);
+			var map_canvas = document.getElementById('map_canvas');
+			var map_options = {
+				center: pos,
+				zoom: 16,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(map_canvas, map_options);
+			var marker = new google.maps.Marker({
+				position: pos,
+				map: map,
+				title: 'Party Address'
+			});
+		});
+	</script>
+<% end %>
+
+<div id="profile-frag-container">
+	<h1>Profile</h1>
+	<ul>
+		<li>Real name: <%= @user.first_name %> <%= @user.last_name %></li>
+		<li>Joined: <%= @user.created_at.strftime("%F") %></li>
+	</ul>
+	<ul>
+		<li>Parties created: <%= @user.hosted_parties.count %></li>
+		<li>Parties attended: <%= @user.attended_parties.count %></li>
+	</ul>
+	<ul>
+		<li>
+			Home address:
+			<p>
+				<%= @user.address %>,<br>
+				<%= @user.city %>, <%= @user.province %>
+			</p>
+		</li>
+	</ul>
+</div>
+
+<div id="map_canvas"></div>

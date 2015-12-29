@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+	<%= javascript_include_tag 'application' %>
+	<%= csrf_meta_tags %>
+	<link rel="stylesheet" href="/styles/reset.css">
+	<link rel="stylesheet" href="/styles/main.css">
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+	<script src="/google_maps_api/google_maps_api.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+		<!-- Raty -->
+		<link href="/raty/jquery.raty.css" rel="stylesheet">
+		<script src="/raty/jquery.raty.js"></script>
+		<script>
+			function raty_update() {
+				$('.rating').html("").raty({
+					score: function() {
+						return $(this).attr('data-score');
+					},
+					readOnly: function() {
+						return $(this).hasClass('read-only');
+					}
+				});
+			}
+			$(function() {
+				raty_update();
+			});
+		</script>
+	<%= yield :head %>
+
+	<title>House Party Finder<%= content_for?(:title) ? (" --- " + yield(:title)) : "" %></title>
+</head>
+
+<body><div style="margin: 1em;">
+	<%= yield %>
+</div></body>
+</html>

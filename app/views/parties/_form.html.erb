@@ -1,0 +1,93 @@
+<%= form_for(@party) do |f| %>
+  <% if @party.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@party.errors.count, "error") %> prohibited this party from being saved:</h2>
+
+      <ul>
+      <% @party.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :capacity %><br>
+    <%= f.number_field :capacity %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br>
+    <%= f.text_field :address %>
+  </div>
+  <div class="field">
+    <%= f.label :city %><br>
+    <%= f.text_field :city %>
+  </div>
+  <div class="field">
+    <%= f.label :province %><br>
+    <%= f.text_field :province %>
+  </div>
+  <div class="field">
+    <%= f.label :latitude %><br>
+    <%= f.text_field :latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :longitude %><br>
+    <%= f.text_field :longitude %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :posted_date %><br>
+    <%= f.datetime_select :posted_date %>
+  </div>
+  <div class="field">
+    <%= f.label :start_date %><br>
+    <%= f.datetime_select :start_date %>
+  </div>
+  <div class="field">
+    <%= f.label :end_date %><br>
+    <%= f.datetime_select :end_date %>
+  </div>
+  <div class="field">
+    <%= f.label :ended %><br>
+    <%= f.check_box :ended %>
+  </div>
+  <div class="field">
+    <%= f.label :featured_until %><br>
+    <%= f.datetime_select :featured_until %>
+  </div>
+  <div class="field">
+    <%= f.label :streaming %><br>
+    <%= f.check_box :streaming %>
+  </div>
+  <div class="field">
+    <%= f.label :private %><br>
+    <%= f.check_box :private %>
+  </div>
+  <div class="field">
+    <%= f.label :food_provided %><br>
+    <%= f.check_box :food_provided %>
+  </div>
+  <div class="field">
+    <%= f.label :alcohol %><br>
+    <%= f.check_box :alcohol %>
+  </div>
+  <div class="field">
+    <%= f.label :parking %><br>
+    <%= f.check_box :parking %>
+  </div>
+  <div class="field">
+    <%= f.label :adult_only %><br>
+    <%= f.check_box :adult_only %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,214 @@
+<% content_for :head do %>
+  <link rel="stylesheet" type="text/css" href="/styles/party-info.css" >
+      <!-- Raty -->
+    <link href="/raty/jquery.raty.css" rel="stylesheet">
+    <script src="/raty/jquery.raty.js"></script>
+    <script>
+      function raty_update() {
+        $('.rating').html("").raty({
+          score: function() {
+            return $(this).attr('data-score');
+          },
+          readOnly: function() {
+            return $(this).hasClass('read-only');
+          },
+          click: function(score) {
+            if ($(this).hasClass('rating-submitter')) {
+              var form = $("form#" + $(this).attr("form-id"));
+              form.find("input[name=rating\\[score\\]]").val(score);
+              form.trigger('submit.rails');
+              $("#rating-form").on('ajax:success', function(event, data, status, xhr) {
+                if (data.ok) {
+                  $('.rating-submitter').raty('set', {
+                    score: data.score
+                  });
+                  $('.rating-count-text').html(data.count + ((data.count == 1) ? " Rating" : " Ratings"));
+                }
+              });
+            }
+          }
+        });
+      }
+      $(function() {
+        raty_update();
+      });
+    </script>
+    <script>
+        function initialize() {
+      var marker;
+          var map_canvas = document.getElementById('map_canvas');
+      var pos = new google.maps.LatLng(<%== @party.latitude %>, <%== @party.longitude %>);
+          var map_options = {
+            center: pos,
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          var map = new google.maps.Map(map_canvas, map_options)
+      marker = new google.maps.Marker({
+        position: pos,
+        map:map,
+        title: "Party Address"
+      });
+      //marker.setPosition(results[0].geometry.location);
+      }
+        google.maps.event.addDomListener(window, 'load', initialize);
+      </script>
+      
+    <!-- jQuery -->
+    <script>
+      $(document).ready(function(){
+        // $("#party-completed").on("click", function(e) {
+        //   $.ajax({
+        //     url:'/parties/completed',
+        //     type: "POST",
+        //     data: {page: window.location.pathname.replace("/parties/", "")}
+        //   });
+        //   e.preventDefault();
+        $("#complete-form").on('ajax:success', function(event, data, status, xhr) {
+          if (data.ok && data.ended) {
+            $(".completed").css("background-color", "red");
+            $('.completed').html("This party has been completed!");
+            $("#party-completed").attr('disabled', true);
+            $('#party-completed').attr("value", "Finished!");
+            $('#party-completed').removeClass('button').addClass('button-disabled');
+          }
+        });
+        // });
+      });
+    </script>
+    <!-- Fotorama -->
+    <link href="../fotorama-4.5.1/fotorama.css" rel="stylesheet">
+    <script src="../fotorama-4.5.1/fotorama.js"></script>
+<% end %>
+
+<% content_for :title, @party.name %>
+
+<section class="party-info" >
+    <div class="name-host-pic-status">
+      <div class="name-host-pic">
+        <%= image_tag @party.avatar.url(:thumbnail), :width => 100, :height => 100 %>
+        <h1 name="pname"><%= @party.name %></h1>
+        <h2>Hosted by <%= @party.host.username %></h2>
+        <h2 name="date">Date: <%= @party.start_date.strftime("%F %r") %></h2>
+        <div style="float: right; margin-right: 0.5em; margin-bottom: 0.5em;">
+          <% if signed_in? && @party.host != current_user %>
+	    <% if current_user.admin != true %>
+	      <% if @party.attendees.include?(current_user) %>
+		<%= link_to "Opt-out of this party", party_unattend_path(@party), :class => 'button', :method => :post %>
+	      <% elsif @party.attendees.count < @party.capacity %>
+		<%= link_to "Attend this party", party_attend_path(@party), :class => 'button', :method => :post %>
+	      <% end %>
+            <% else %>
+            
+	      <%if @party.featured_until == nil%>
+		<%= link_to "Feature this party", party_feature_path(@party), :class => 'button', :method => :post %>
+	      <% end %>
+	      <% if @party.featured_until != nil %>
+		<% if @party.featured_until <= Date.today %> 
+		  <%= link_to "Feature this party", party_feature_path(@party), :class => 'button', :method => :post %>
+		
+		<% else %>
+		  <%= link_to "Unfeature this party", party_unfeature_path(@party), :class => 'button', :method => :post %>
+		<% end %>
+	      <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <% if @party.ended %>
+        <h3 class="completed" style="background-color: red">This party has been completed!</h3>
+        <button id="party-completed" class="button-disabled" type="submit" disabled>Finished!</button>
+    <% else %>
+        <h3 class="completed">This party has not been completed!</h3>
+        <% if signed_in? && @party.host == current_user %>
+	  <%= form_for @party, url: "/parties/#{@party.id}/complete", html: { id: "complete-form" }, remote: true do |f| %>
+	      <%= f.submit "Complete", id: "party-completed", class: "button" %>
+	  <% end %>
+        <% end %>
+    <% end %>
+    </div>
+    <% unless @party.album_attachments.empty? && current_user != @party.host %>
+    <div class="album">
+        <h2>Party Album</h2>
+        <!-- Fotorama -->
+        <div class="fotorama">
+            <% @party.album_attachments.each do |album_attachment| %>
+              <%= image_tag album_attachment.picture.url %>
+            <% end %>
+        </div>
+        <br>
+	  <% if signed_in? && @party.host == current_user %>
+	    <%= form_for :album_attachment, url: party_attach_path(@party), html: { multipart: true } do |f| %>
+	      <%= f.label "Upload a picture:", :for => :picture %><br>
+	      <%= f.file_field :picture %>
+	      <%= f.submit "Upload", :class => "button" %>
+	    <% end %>
+	  <% end %>
+    </div>
+    <% end %>
+    <div class="party-description">
+      <h2>Party Description</h2>
+      <div class="clear"></div>
+      <div class="party-description-text">
+        <p name="party-description"><%= @party.description %></p>
+        <p name="location">Address: <%= @party.address + ", " + @party.city + ", " + @party.province %></p> 
+        <p name="capacity">Capacity: <%= @party.attendees.count %>/<%= @party.capacity %> <br />
+        <p>Food Provided: <%= @party.food_provided ? "YES" : "NO" %></p>
+        <p>Alcohol Provided: <%= @party.alcohol ? "YES" : "NO" %></p>
+        <p>Parking Provided: <%= @party.parking ? "YES" : "NO" %></p>
+        <p>Adults Only: <%= @party.adult_only ? "YES" : "NO" %></p>
+        </p>
+      </div>
+      <div id="map_canvas"></div>
+    </div>
+
+    <% if @party.streaming && !@party.ended %>
+      <div class="live-stream">
+        <h2>Live Streaming</h2>
+        <% if current_user == @party.host %>
+          <iframe src="/parties/<%= @party.id %>/stream_in" style="width:320px; height:300px; overflow: hidden;"></iframe>
+        <% else %>
+          <iframe src="/parties/<%= @party.id %>/stream_out" style="width:320px; height:300px; overflow: hidden;"></iframe>
+        <% end %>
+      </div>
+    <% end %>          
+  </section>
+  <section class="side-bar" >
+    <div class="party-rating">
+      <div class = "rating<%= @allowed_to_rate ? ' rating-submitter' : ' read-only' %>" data-score="<%= @party.rating_score %>" form-id="rating-form"></div>
+      <p>(<span class="rating-count-text"><%= pluralize(@party.rating_count, "Rating") %></span>)</p>
+        <% if @allowed_to_rate %>
+          <%= form_for :rating, url: "/parties/#{@party.id}/rate", html: { id: "rating-form" }, remote: true do |f| %>
+            <%= f.hidden_field :score %>
+          <% end %>
+        <% end %>
+    </div>
+    <div class="similar-parties">
+      <h2>Similar Parties</h2>
+
+      <% if @similar_parties.empty? %>
+        <div class="div-similar-party">
+          <h3>No similar parties.</h3>
+        </div>
+      <% else %>
+        <% @similar_parties.each do |party| %>
+          <%= link_to party_url(party) do %>
+            <div class="div-similar-party">
+              <%= image_tag party.avatar.url(:thumbnail), :width => 64, :height => 64 %>
+              <div class="div-similar-party-description">
+                <p><%= party.name %></p>
+                <p class="party-date"><%= party.start_date.strftime("%F") %></p>
+                <span class="rating read-only" data-score="<%= party.rating_score %>"><%= party.rating_score %></span>
+                <p style="display: inline;">(<%= party.rating_count %>)</p>
+                <div class="clear"></div>
+                <p>
+                  <%= truncate party.description, length: 30 %>           
+                </p>    
+              </div>        
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  
+  </section>

@@ -1,0 +1,234 @@
+/***************Party-info css*****************************/
+.party-info{
+	width:70%;
+	float:left;
+}
+
+.name-host-pic {
+	display: block;
+	overflow-y: auto;
+	background-color: white;
+}
+
+.name-host-pic-status img{
+	background-color:yellow;
+	float:left;
+	width: 128px;
+}
+
+.name-host-pic-status h1 {
+	background-color:#054387;
+	color:white;
+	/*margin:0 0 2% 0;*/
+	padding:.2em .2em;
+	font-family:"Myriad Pro";
+	font-size:1.5em;
+	font-weight:bold;
+	margin-left: 128px;
+}
+.name-host-pic-status h2 {
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.6em .3em;
+	font-family:"Myriad Pro";
+	font-size:1em;
+	font-weight:bold;
+	margin-left: 128px;
+}
+.name-host-pic-status h3 {
+	display: block;
+	margin: 0.4em 0;
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding: 0.3em 0.3em;
+	font-family:"Myriad Pro";
+	font-size:1em;
+	font-weight:normal;
+	/*border:medium #054387 solid;*/
+	text-align:center;
+	clear:both;
+}
+
+.name-host-pic-status h3.completed {
+	background-color: #348705;
+	color: white;
+}
+
+.album h2{
+	display: block;
+	background-color:#054387;
+	color:white;
+	/*margin:0 0 2% 0;*/
+	padding:.2em .2em;
+	font-family:"Myriad Pro";
+	font-size:1.5em;
+	font-weight:normal;
+	text-align:left;
+	margin-bottom: 0.4em;
+}
+.party-description {
+	display: block;
+	overflow-y: auto;
+	background-color: white;
+	padding: 0 0 0.4em 0;
+}
+.party-description h2 {
+	background-color:#054387;
+	color:white;
+	/*margin:0 0 2% 0;*/
+	padding:.2em .2em;
+	font-family:"Myriad Pro";
+	font-size:1.5em;
+	font-weight:normal;
+	text-align:left;
+}
+.party-description-text {
+	display: block;
+	float: left;
+	width: 65%;
+	padding: 0.4em;
+	overflow-y: auto;
+}
+.party-description p {
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.1em .1em;
+	font-family:"Myriad Pro";
+	font-size:1em;
+	font-weight:normal;
+	text-align:left;
+	float:left;
+	clear:both;
+	margin-bottom: 0.8em;
+}
+#map_canvas {
+	height: 200px;
+	width: 30%;
+	float: right;
+	margin-right: 0.4em;   
+}
+.live-stream{
+	clear:both;
+	margin-top: 1em;
+}
+.live-stream h2 {
+	background-color:#054387;
+	color:white;
+	/*margin:0 0 2% 0;*/
+	padding:.2em .2em;
+	font-family:"Myriad Pro";
+	font-size:1.5em;
+	font-weight:normal;
+	text-align:left;
+}
+.live-stream img{
+	height:100%;
+	width:100%;
+}
+.side-bar{
+	width:25%;
+	float:right;
+	margin-left:5%;
+}
+.party-rating {
+	overflow-y: auto;
+	margin-bottom: 0.8em;
+	position: relative;
+}
+.party-rating img{
+	display: inline-block;
+	vertical-align: middle;
+	width: 10%;
+
+}
+
+.party-rating p {
+	display: inline-block;
+	vertical-align: middle;
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.1em .1em;
+	font-family:"Myriad Pro";
+	font-size:1.4em;
+	font-weight:bold;
+	text-align:right;
+}
+
+.similar-parties {
+	background-color: white;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.similar-parties p{
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.1em .1em;
+	font-family:"Myriad Pro";
+	font-size:1em;
+	font-weight:normal;
+	text-align:left;
+}
+.similar-parties h2 {
+	color:white;
+	background-color:#054387;
+	padding:.2em .2em;
+	font-family:"Myriad Pro";
+	font-size:1.5em;
+	font-weight:normal;
+	text-align:left;
+	width:100%;
+}
+.div-similar-party{
+	display: block;
+	overflow-y: hidden;
+	clear:both;
+	margin: 0.7em 0.7em;	
+}
+
+.div-similar-party > img {
+	display: inline-block;
+	vertical-align: middle;
+	width: 25%;
+}
+
+.div-similar-party-description {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.7em;
+	width: 60%;
+}
+.div-similar-party h3{
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.1em .1em;
+	font-family:"Myriad Pro";
+	font-size:1.5em;
+	font-weight:normal;
+	text-align:left;
+
+}
+.div-similar-party p{
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.1em .1em;
+	font-family:"Myriad Pro";
+	font-size:.8em;
+	font-weight:normal;
+	text-align:left;
+	margin:0;
+}
+.party-date {
+	color:#054387;
+	/*margin:0 0 2% 0;*/
+	padding:.1em .1em;
+	font-family:"Myriad Pro";
+	font-size:1em;
+	font-weight:normal;
+	text-align:left;
+	margin:0;
+}
+
+.div-similar-party img{
+	float:left;
+}

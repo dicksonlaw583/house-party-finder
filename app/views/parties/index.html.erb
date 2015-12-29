@@ -1,0 +1,39 @@
+<% content_for :head do %>
+  <link rel="stylesheet" type="text/css" href="/styles/LogIn.css" >
+  <link rel="stylesheet" type="text/css" href="/styles/SearchResult.css" >
+<% end %>
+
+<% content_for :title, "Searching for #{params[:q]}" %>
+
+<% if @empty_query %>
+  <p>Please enter a search query.</p>
+<% elsif @parties == [] %>
+  <p>No parties are found for "<%= params[:q][:name_cont] %>".</p>
+<% else %>
+  <% @parties.each do |party| %>
+    <div class="search-table-first">
+      <a href="<%= party_path(party) %>">
+        <div class="search-row">
+          <%= image_tag party.avatar.url(:thumbnail), :width => 100, :height => 100, :class => "preview-image" %>
+          <div class="party-info">
+            <div class="party-info-text">
+              <div class="party-info-text-left">
+                <h4 class="party-title"> Party Title: <%= party.name %> </h4>
+                <div class="date">Date: <span class="date-answer"><%= party.start_date.strftime("%F %r") %></span></div>
+              </div>
+              <div class="party-info-text-right">
+                <div class="location">Location: <span class = "location-answer"><%= party.address + ', ' + party.city + ', ' + party.province %></span></div>
+                <div class="attending">Attendance: <span class = "attending-answer"><%= party.attendees.count %>/<%= party.capacity %></span></div>
+              </div>
+            </div>
+            <p class="party-desc">
+              <%= truncate party.description, :length => 460, :separator => /\w/, :omission => "&hellip;" %>
+            </p>          
+          </div>
+        </div>
+      </a>
+    </div>
+  <% end %>
+  
+  <%= will_paginate %>
+<% end %>

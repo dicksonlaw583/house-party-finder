@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+	<%= javascript_include_tag 'application' %>
+	<%= csrf_meta_tags %>
+	<link rel="stylesheet" href="/styles/reset.css">
+	<link rel="stylesheet" href="/styles/main.css">
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<style>
+		body {
+			min-width: auto;
+			overflow: hidden;
+		}
+	</style>
+
+	<%= yield :head %>
+
+	<title>House Party Finder<%= content_for?(:title) ? (" --- " + yield(:title)) : "" %></title>
+</head>
+
+<body>
+	<%= yield %>
+</body>
+</html>

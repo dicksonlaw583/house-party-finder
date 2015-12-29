@@ -1,0 +1,72 @@
+<% content_for :head do %>
+	<link rel="stylesheet" href="/styles/LogIn.css" >
+<% end %>
+
+<% content_for :title, "Sign up or login" %>
+
+<% if !@user.nil? && @user.errors.any? %>
+	<div id="error_explanation">
+		<h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+		<ul>
+			<% @user.errors.full_messages.each do |message| %>
+				<li><%= message %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+<div class="LogInBox" id="LogIn"> 
+	<h3>Log-In</h3>
+	<%= form_for(:user, url: user_session_path) do |f| %>
+		<%= f.text_field :username, placeholder: "User Name" %>
+		<%= f.password_field :password, placeholder: "Password", autocomplete: "off" %>
+
+		<% if Devise.mappings[:user].rememberable? -%>
+			<div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+		<% end -%>
+
+		<%= f.submit "Login", class: "login-button button", style: "width: 100%; cursor: pointer; font-size: 1em;" %>
+	<% end %>
+</div>
+<div class="LogInBoxOR">OR</div>
+<div class = "LogInBox" id = "Registration"> 
+	<h3>Register</h3>
+	<%= form_for(:user, url: user_registration_path) do |f| %>
+		<%= f.text_field :email, :placeholder => "Email" %>
+		<%= f.text_field :username, :placeholder => "Desired User Name" %>
+		<%= f.text_field :first_name, :placeholder => "First Name" %>
+		<%= f.text_field :last_name, :placeholder => "Last Name" %>
+		<%= f.select :province, [
+					["-- Select province --", "none"],
+					["Alberta", "AB"],
+					["British Columbia", "BC"],
+					["Manitoba", "MB"],
+					["New Brunswick", "NB"],
+					["Newfoundland and Labrador", "NL"],
+					["Nova Scotia", "NS"],
+					["Ontario", "ON"],
+					["Prince Edward Island", "PE"],
+					["Quebec", "QC"],
+					["Saskatchewan", "SK"],
+					["Northwest Territories", "NT"],
+					["Nunavut", "NU"],
+					["Yukon", "YT"]
+				], {}, id: "province", onChange: "clearCity(); codeAddress()",
+				style: "width:100%; padding-top:1px; padding-bottom:1px; margin-left:auto;", required: "required" %>
+		<%= f.text_field :city, :placeholder => "City",
+				id: "city", onChange: "codeAddress()" %>
+		<%= f.text_field :address, :placeholder => "Street Address",
+				id: "location", onChange: "codeAddress()" %>
+		<%= f.password_field :password, :placeholder => "Password", autocomplete: "off" %>
+		<%= f.password_field :password_confirmation, :placeholder => "Password Confirmation", autocomplete: "off" %>
+
+		<div id="map-canvas"></div>
+		<div id="map-spacing"></div>
+
+		<%= f.hidden_field :longitude, id: "longitude" %>
+		<%= f.hidden_field :latitude, id: "latitude" %>
+
+		<%= f.submit "Register", class: "login-button button", style: "width: 100%; cursor: pointer; font-size: 1em;" %>
+	<% end %>	
+</div>

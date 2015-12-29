@@ -1,0 +1,57 @@
+<% content_for :head do %>
+	<script src="<%= FAYE_CONFIG['base_url'] %>/client.js"></script>
+<% end %>
+
+<% content_for :title, "Streaming for #{@party.name}" %>
+
+<div>
+    <p id="not-supported" style="display:none">Sorry your browser does not support getUserMedia or it is disabled</p>
+    <video id="live" width="320" height="240" autoplay style="display: inline;background-color:black"></video>
+    <canvas width="320" id="canvas" height="240" style="display:none"></canvas>
+
+    <button id="start" class="button">Start streaming</button><br>
+</div>
+
+<script type="text/javascript">
+	var video = $("#live").get()[0];
+	var canvas = $("#canvas");
+	var ctx = canvas.get()[0].getContext('2d');
+	var timeout;
+
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+
+	window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL; 
+	if (navigator.getUserMedia) {    
+		$("#start").on('click', function() {
+			if ($(this).attr('streaming')) {
+				clearInterval(timeout);
+				$(this).removeAttr('streaming');
+				$(this).html('Start streaming');
+			}
+			else {
+				navigator.getUserMedia(
+					{
+						video: true
+					}, 
+					function(stream) {
+						video.src = window.URL.createObjectURL(stream);
+					}, 
+					function(e) {
+
+					}
+				);
+
+				var client = new Faye.Client('<%== FAYE_CONFIG['base_url'] %>');
+				timeout = setInterval(function() {
+					ctx.drawImage(video, 0, 0, 320, 240);
+					client.publish('/parties/<%= @party.id %>', { c: canvas.get()[0].toDataURL('image/jpeg', 1.0) });
+				}, 100);
+				$(this).attr('streaming', 'streaming');
+				$(this).html('Stop streaming');
+			}
+		});
+	} else {
+		document.getElementById('not-supported').removeAttribute('style');
+		document.getElementById('start').setAttribute('disabled', 'disabled');
+	}	        
+</script>

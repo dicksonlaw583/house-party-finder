@@ -1,0 +1,107 @@
+<% content_for :head do %>
+  <!-- Fotorama -->
+  <link href="/fotorama-4.5.1/fotorama.css" rel="stylesheet">
+  <script src="/fotorama-4.5.1/fotorama.js"></script>
+  <!-- Raty -->
+  <link href="/raty/jquery.raty.css" rel="stylesheet">
+  <script src="/raty/jquery.raty.js"></script>
+  <script>
+    function raty_update() {
+      $('.rating').html("").raty({
+        score: function() {
+          return $(this).attr('data-score');
+        },
+        readOnly: function() {
+          return $(this).hasClass('read-only');
+        }
+      });
+    }
+    $(function() {
+      raty_update();
+    });
+  </script>
+  <!-- Page style -->
+  <style>
+    #user-page .user-name, #user-page .user-rating {
+      margin-top: 1.4em;
+    }
+
+    #user-page .user-name {
+      float: left;
+    }
+
+    #user-page .user-name > img, #user-page .user-name > h1 {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    #user-page .user-rating {
+      float: right;
+    }
+
+    #user-page .user-rating > img, #user-page .user-rating > p {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .user-nav {
+      display: block;
+      margin-top: 1.4em;
+    }
+
+    .user-nav > li {
+      display: inline-block;
+    }
+
+    .user-nav > li a {
+      display: block;
+      background-color: navy;
+      color: white;
+      text-decoration: none;
+      padding: 0.4em;
+      border: 2px navy solid;
+    }
+
+    #dynamic-box {
+      display: block;
+      width: 100%;
+      border: 2px navy solid;
+      height: 480px;
+    }
+  </style>
+<% end %>
+
+<% content_for :title, "User: #{@user.username}" %>
+
+<div id="user-page">
+  <div class="fotorama" data-width="100%" data-height="128" data-loop="true" data-autoplay="true" data-nav="thumbs" data-navposition="top">
+    <% @user.album_attachments.each do |album_attachment| %>
+      <%= image_tag album_attachment.picture.url %>
+    <% end %>
+  </div>
+  <div class="user-name">
+    <%= image_tag @user.avatar.url(:thumbnail), :width => 64, :height => 64 %>
+    <h1><%= @user.username %></h1>
+  </div>
+  <div class="user-rating">
+    <div class="rating read-only" data-score="<%= @user.rating_score %>"><%= @user.rating_score %></div> 
+    <p>(<%= pluralize(@user.rating_count, "Ratings") %>)</p>
+    <% if signed_in? && current_user != @user %>
+      <br><br><p>
+        <% if @user.subscribers.include?(current_user) %>
+          <%= link_to "Unsubscribe", user_unsubscribe_path(@user), :method => :post, :class => "button" %>
+        <% else %>
+          <%= link_to "Subscribe", user_subscribe_path(@user), :method => :post, :class => "button" %>
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+  <ul class="user-nav">
+    <li><a href="/users/<%= @user.id %>/profile" class="dynamic-load" target="dynamic-box">Profile</a></li>
+    <li><a href="/users/<%= @user.id %>/activity" class="dynamic-load" target="dynamic-box">Activity</a></li>
+    <li><a href="/users/<%= @user.id %>/subscribers" class="dynamic-load" target="dynamic-box">Subscribers</a></li>
+    <li><a href="/users/<%= @user.id %>/portfolio" class="dynamic-load" target="dynamic-box">Portfolio</a></li>
+  </ul>
+  <iframe name="dynamic-box" src="/users/<%= @user.id %>/<%= params[:frag] || 'profile' %>" id="dynamic-box"></iframe>
+</div>

@@ -1,0 +1,54 @@
+<% content_for :head do %>
+	<link rel="stylesheet" href="/styles/homepage.css" >
+<% end %>
+
+<% content_for :title, "My active parties" %>
+
+<% if current_user.admin %>
+
+  <div class="featured-heading">
+	  <h2>All on-going parties</h2>
+  </div>
+  
+  <% if @all_parties.empty? %>
+	<p class="featured-no-result">There are no upcoming parties. <%= link_to "Start one!", new_party_path %></p>
+  <% else %>
+	<ul class="featured-list">
+		  <% @all_parties.each do |party| %>
+			  <li><%= link_to party_url(party) do %><div class="featured-div">
+				  <%= image_tag party.avatar.url(:thumbnail) %>
+				  <h4><%= party.name %></h4>
+				  <p><%= party.city %>, <%= party.province %></p>
+				  <p>Attendance: <%= party.attendees.count %>/<%= party.capacity %></p>
+			  </div><% end %></li>
+		  <% end %>
+	</ul>
+	<p>
+		<%= will_paginate @all_parties %>
+	</p>
+  <% end %>
+  
+<% else %>
+  <div class="featured-heading">
+	  <h2>My active parties</h2>
+  </div>
+  
+  <% if @parties.empty? %>
+	<p class="featured-no-result">You have no upcoming parties. <%= link_to "Start one!", new_party_path %></p>
+  <% else %>
+    <ul class="featured-list">
+	    <% @parties.each do |party| %>
+		    <li><%= link_to party_url(party) do %><div class="featured-div">
+			    <%= image_tag party.avatar.url(:thumbnail) %>
+			    <h4><%= party.name %></h4>
+			    <p><%= party.city %>, <%= party.province %></p>
+			    <p>Attendance: <%= party.attendees.count %>/<%= party.capacity %></p>
+		    </div><% end %></li>
+	    <% end %>
+    </ul>
+    <p>
+	    <%= will_paginate @parties %>
+    </p>
+
+  <% end %>
+<% end %>

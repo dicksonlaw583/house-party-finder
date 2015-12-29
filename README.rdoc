@@ -1,0 +1,83 @@
+House Party Finder --- Installation Instructions
+
+---
+
+1. Open a console window. Do not cd to the HousePartyFinder directory yet.
+
+2. Install ImageMagick at http://www.imagemagick.org/script/binary-releases.php
+
+2A (Mac Only): If you are on Mac OS X, you must also install xz from http://macpkg.sourceforge.net/
+
+3. Install rvm:
+
+\curl -sSL https://get.rvm.io | bash -s stable
+
+4 Set the permissions for ~/.rvm to 775:
+
+sudo chmod -R 775 ~/.rvm
+
+5 Install Ruby 1.9.3:
+
+rvm install 1.9.3
+
+6 Create a new gemset under Ruby 1.9.3:
+
+rvm use 1.9.3
+
+rvm gemset create house_party_finder
+
+rvm gemset use house_party_finder
+
+7. Install Rails 4.1.0:
+
+sudo gem install rails 4.1.0
+
+8. Close and re-open the console window.
+
+9. cd into the HousePartyFinder directory.
+
+10. Install and run bundler:
+
+sudo gem install bundler
+bundle install
+
+11. Initialize the database:
+
+rake db:setup RAILS_ENV="production"
+
+12. You may now start the server:
+
+./start.sh
+
+13. Visit localhost:3000 to verify the functionality of the server.
+
+14. Log in as the admin user using the following credentials:
+
+User Name: admin
+Password: admin123
+
+If successful, make sure to change the password on this user using the Settings link at the top-right corner.
+
+---
+
+Updating House Party Finder
+
+1. Open a console window and cd to the HousePartyFinder directory.
+
+2. Shut down the server:
+
+./stop.sh
+
+3. Run bundler:
+
+bundle update
+
+4. Update the database:
+
+rake db:migrate RAILS_ENV="production"
+
+5. Start the server:
+
+./start.sh
+
+5. Visit localhost:3000 to verify the functionality of the server.

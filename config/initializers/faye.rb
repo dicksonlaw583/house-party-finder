@@ -1,0 +1,1 @@
+FAYE_CONFIG = YAML.load_file(File.expand_path('../../faye.yml', __FILE__))[Rails.env]

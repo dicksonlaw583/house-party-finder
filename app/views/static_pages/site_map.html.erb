@@ -1,0 +1,32 @@
+<% content_for :head do %>
+	<link rel="stylesheet" href="/styles/site-map.css">
+<% end %>
+
+<% content_for :title, "Site Map" %>
+
+<div class="site-map">
+	<h1>Site Map</h1>
+	
+	<h2>Home</h2>
+		<ul>
+			<li><a href="/parties/featured">Featured parties</a></li>
+			<li><a href="/parties/new">Host a party</a> </li>
+			<li><a href="/parties/streaming">Live streams</a></li>
+			<li><a href="/my-parties">My parties</a></li>
+			<li><a href="/register_login">Login &frasl; Register</a></li>
+			<li><a href="/privacy_policy">Privacy policy</a></li>
+			<li><a href="/terms_of_use">Terms of use</a></li>
+			<li><a href="/about_us">About us</a></li>
+		</ul>
+
+	<% if signed_in? %>
+		<h2>My Profile</h2>
+			<ul>
+				<li><a href="/users/<%= current_user.id %>?frag=profile">Profile</a></li>
+				<li><a href="/users/<%= current_user.id %>?frag=activity">Activity</a> </li>
+				<li><a href="/users/<%= current_user.id %>?frag=subscribers">Subscribers</a></li>
+				<li><a href="/users/<%= current_user.id %>?frag=portfolio">Portfolio</a></li>
+			</ul>
+	<% end %>
+		
+</div>

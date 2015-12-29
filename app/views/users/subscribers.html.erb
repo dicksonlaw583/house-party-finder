@@ -1,0 +1,60 @@
+<% content_for :head do %>
+	<style>
+		.subscriber-entry {
+			display: inline-block;
+			margin: 0.6em;
+			padding: 0.6em;
+			border-radius: 0.6em;
+			background-color: white;
+			width: 27.5%;
+		}
+
+		.subscriber-entry > img {
+			float: left;
+			display: block;
+		}
+
+		.subscriber-entry .entry-description {
+			display: block;
+			margin-left: 112px;
+			width: auto;
+		}
+
+		.subscriber-entry p {
+			margin-top: 0.6em;
+		}
+
+		/* ignore below, erase */
+		.clear {
+			display: block;
+			clear: right;
+		}
+	</style>
+<% end %>
+
+<% if @subscribers.count == 0 %>
+	<p>This user has no subscribers.</p>
+<% else %>
+	<ul>
+		<% @subscribers.each do |subscriber| %>
+			<li class="subscriber-entry">
+				<img src="/images/homepage-images/1_copy(1).JPG">
+				<div class="entry-description">
+					<div class="title-block">
+						<a href="/users/<%= subscriber.id %>"><%= subscriber.username %></a>
+					</div>
+					<div class="rating-block">
+						<span class="rating read-only" data-score="<%= subscriber.rating_score %>"><%= subscriber.rating_score %></span>
+						<span>(<%= subscriber.rating_count %>)</span>
+					</div>
+					<div class="clear"></div>
+					<p>
+						Joined: <%= subscriber.join_date.strftime("%F") %>
+					</p>
+					<p><a href="/users/<%= subscriber.id %>">View details</a></p>		
+				</div>				
+			</li>
+		<% end %>
+	</ul>
+	<p><%= will_paginate @subscribers %></p>
+<% end %>

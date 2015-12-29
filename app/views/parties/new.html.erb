@@ -1,0 +1,149 @@
+<% content_for :head do %>
+	<link rel="stylesheet" href="/styles/homepage.css">
+	<link rel="stylesheet" href="/styles/hostparty.css">
+	<link rel="stylesheet" type="text/css" href="/styles/jquery.datepick.css"> 
+	<script type="text/javascript" src="/script/jquery.plugin.js"></script> 
+	<script type="text/javascript" src="/script/jquery.datepick.js"></script>
+	<script>
+	$(document).ready(function() {
+		$('#datepick').datepick();
+	});
+	</script>
+	<style>
+		.middle-align-inline {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	</style>
+<% end %>
+
+<% content_for :title, "Host a Party" %>
+
+<div class="featured-heading">
+	<h2>Host a New Party</h2>
+</div>
+
+<% if @party.errors.any? %>
+	<div id="error_explanation">
+		<h2><%= pluralize(@party.errors.count, "error") %> prohibited this party from being saved:</h2>
+
+		<ul>
+			<% @party.errors.full_messages.each do |message| %>
+				<li><%= message %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+<%= form_for @party, :url => parties_path, :html => { multipart: true, class: "host" } do |f| %>
+    <span>
+    	<%= f.label "Party Name: ", :for => :name, :class => "pad10" %>
+    	<%= f.text_field :name, :class => "box1", :placeholder => "Enter party name" %>
+    	<br><br>
+    </span>
+	
+	<!-- MAP SECTION -->
+	<span style="float:left; padding-left:55%;"><div id="map-canvas">
+	</div></span>
+	<!-- MAP SECTION -->
+	<%= f.hidden_field :latitude, id: "latitude" %>
+	<%= f.hidden_field :longitude, id: "longitude" %>
+
+    <span style="padding-bottom:5px;">
+        <%= f.label "Province: ", :for => :province, :class => "pad10" %>
+        <%= f.select :province, [
+					["-- Select province --", "none"],
+					["Alberta", "AB"],
+					["British Columbia", "BC"],
+					["Manitoba", "MB"],
+					["New Brunswick", "NB"],
+					["Newfoundland and Labrador", "NL"],
+					["Nova Scotia", "NS"],
+					["Ontario", "ON"],
+					["Prince Edward Island", "PE"],
+					["Quebec", "QC"],
+					["Saskatchewan", "SK"],
+					["Northwest Territories", "NT"],
+					["Nunavut", "NU"],
+					["Yukon", "YT"]
+				], {}, id: "province", class: "fr", required: "required", onChange: "clearCity(); codeAddress()",
+				style: "margin-bottom:8px; padding-bottom:1px; padding-top:1px;" %>
+        <br>
+    </span>
+	<span>
+		<%= f.label "City: ", :for => :city, :class => "pad10" %>
+		<%= f.text_field :city, :placeholder => "City",
+				id: "city", class: "box2", onChange: "codeAddress()" %>
+		<br><br>
+	</span>
+    <span>
+    	<%= f.label "Location: ", :for => :address, :class => "pad10" %>
+		<%= f.text_field :address, :placeholder => "Street Address",
+				id: "location", class: "box1", onChange: "codeAddress()" %>
+        <br><br>
+    </span>
+    <span style = "padding-bottom:4px">
+    	<%= f.label "Time: ", :for => :start_date, :class => "pad10" %>
+    	<%= f.datetime_select :start_date %>
+        <br><br>
+    </span>
+    <span>
+        <%= f.label "Capacity: ", :for => :capacity, :class => "pad10" %><%= f.number_field :capacity, :placeholder => "Capacity", :min => 1 %>
+		<br><br>
+    </span>
+    <span style="clear:both">
+    	<p>
+    		<span class="middle-align-inline">Preview image:</span>
+    		<%= image_tag @party.avatar.url(:thumbnail), :width => 100, :height => 100, :class => "middle-align-inline", :style => "margin-left: 1em;" %>
+    	</p>
+    	<br>
+    	<%= f.label "Change image", :for => :avatar, :class => "pad10" %>
+    	<span style="padding-left:20px">
+    		<%= f.file_field :avatar %>
+    	</span>
+    	<br><br>
+    </span>
+    <span style="clear:both">
+    	<%= f.label "Description: ", :for => :description, :class => "pad10" %>
+        <span style="padding-left:20px">
+        	<%= f.text_area :description, :rows => 8, :class => "box1 ta" %>
+        </span>
+        <br><br>
+    </span>
+    <div style="clear:both">
+        <br>
+        <span>
+        	<%= f.check_box :food_provided %><%= f.label "Food/Drinks Provided", :for => :food_provided %>
+        </span>
+        <span>
+        	<%= f.check_box :alcohol %><%= f.label "Alcohol", :for => :alcohol %>
+        </span>
+        <span>
+        	<%= f.check_box :parking %><%= f.label "Parking", :for => :parking %>
+        </span>
+        <span>
+        	<%= f.check_box :adult_only %><%= f.label "18+", :for => :adult_only %>
+        </span>
+        <span>
+        	<%= f.check_box :streaming %><%= f.label "Live Stream?", :for => :streaming %>
+        </span>
+    </div>
+    <br>
+	<!--<label class="pad10">Upload Pictures: </label><br>
+	<input type="file" name="uploaded" id="uploaded" onChange="getName();" multiple></input>
+	<input type="hidden" name = "uploaded_values" id = "uploaded_values"></input>
+	<script>
+		function getName() {
+			var file_names = document.getElementById("uploaded").files;
+			var one_line = "";
+			for (var i = 0; i < file_names.length; i++){
+				if (i != file_names.length - 1) {
+					one_line += (file_names[i].name + ",");
+				} else {
+					one_line += file_names[i].name;
+				}
+			}
+			document.getElementById("uploaded_values").value = one_line;
+		} -->
+	<%= f.submit "Submit", :class => "button" %>
+<% end %>

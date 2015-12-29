@@ -1,0 +1,13 @@
+.picture-block {
+	display: block;
+	overflow-y: auto;
+}
+
+.picture-label {
+	float: left;
+	width: 150px;
+}
+
+.picture-description {
+	margin-left: 175px;
+}

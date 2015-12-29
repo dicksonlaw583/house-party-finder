@@ -1,0 +1,5 @@
+development:
+  base_url: http://localhost:9292/faye
+
+production:
+  base_url: http://localhost:9292/faye

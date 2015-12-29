@@ -1,0 +1,27 @@
+<% content_for :head do %>
+	<link rel="stylesheet" href="/styles/homepage.css" >
+<% end %>
+
+<% content_for :title, "Live Streams" %>
+
+<div class="featured-heading">
+	<h2>Live Streams</h2>
+</div>
+
+<% if @parties.empty? %>
+	<p class="featured-no-result">No parties are set to be streamed.</p>
+<% else %>
+	<ul class="featured-list">
+		<% @parties.each do |party| %>
+			<li><%= link_to party_url(party) do %><div class="featured-div">
+				<%= image_tag party.avatar.url(:thumbnail) %>
+				<h4><%= party.name %></h4>
+				<p><%= party.city %>, <%= party.province %></p>
+				<p>Attendance: <%= party.attendees.count %>/<%= party.capacity %></p>
+			</div><% end %></li>
+		<% end %>
+	</ul>
+	<p>
+		<%= will_paginate %>
+	</p>
+<% end %>

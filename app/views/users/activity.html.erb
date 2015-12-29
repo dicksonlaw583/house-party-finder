@@ -1,0 +1,68 @@
+<% content_for :head do %>
+	<style>
+		.activity-entry {
+			display: block;
+			margin: 0.4em;
+			padding: 0.4em;
+			border-radius: 0.4em;
+			background-color: white;
+			overflow-y: auto;
+		}
+
+		.activity-entry > img {
+			float: left;
+			display: block;
+		}
+
+		.activity-entry .entry-description {
+			display: block;
+			margin-left: 112px;
+			width: auto;
+		}
+
+		.activity-entry .title-block {
+			float: left;
+		}
+
+		.activity-entry .rating-block {
+			float: right;
+			margin: 0.2em 0;
+		}
+
+		.activity-entry p {
+			margin-top: 0.6em;
+		}
+
+		.clear {
+			clear: right;
+		}
+	</style>
+<% end %>
+
+<% if @attended_parties.count == 0 %>
+	<p class="no-result">This user has yet to attend a party.<p>
+<% else %>
+	<ul>
+		<% @attended_parties.each do |party| %>
+			<li class="activity-entry">
+				<%= image_tag party.avatar.url(:thumbnail), :width => 100, :height => 100 %>
+				<div class="entry-description">
+					<div class="title-block">
+						Attended: <a href="/parties/<%= party.id %>" target="_parent"><%= party.name %></a> (<%= party.start_date.strftime("%F %r") %>)
+					</div>
+					<div class="rating-block">
+						<span class="rating read-only" data-score="<%= party.rating_score %>"><%= party.rating_score %></span>
+						<span>(<%= party.rating_count %>)</span>
+					</div>
+					<div class="clear"></div>
+					<p>
+						Location: <%= party.address %>, <%= party.city %>, <%= party.province %><br>
+						Description: <%= party.description %>
+					</p>
+					<p><a href="/parties/<%= party.id %>" target="_parent">View details</a></p>		
+				</div>				
+			</li>
+		<% end %>
+	</ul>
+	<p><%= will_paginate @attended_parties %></p>
+<% end %>

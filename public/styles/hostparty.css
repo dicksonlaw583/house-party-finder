@@ -1,0 +1,91 @@
+@charset "utf-8";
+/* CSS Document */
+
+.container {
+	width: 60%;
+	display: inline;
+}
+
+div.tr {
+	display:table-row;
+}
+
+div.tc{
+	display:table-cell;
+}
+
+div.inline {
+	display: inline;
+}
+
+label.size {
+	width: 300px;
+	display: inline;
+}
+
+.box1 {
+	width: 40%;
+	display: inline;
+	float:left;
+}
+
+.box2 {
+	width: 15%;
+	display: inline;
+	float:left;
+}
+
+.box3{
+	width: 10%;
+	display: inline;
+	float:left;
+}
+
+.fr {
+	width: 15%;
+	display:inline;
+	}
+	
+textarea {
+	resize: none;
+	}
+
+.pad10 {
+	margin-top:3px; 
+	width: 100px;
+	text-align: left;
+	float: left;
+	}
+.padprov{
+	width:100px;
+	text-align:left;
+	float:left;
+	outline-offset:15px;
+
+	}
+	
+form.host{
+	position: relative;
+	font-family:"Myriad Pro";
+	padding:20px;
+	}
+	
+
+.feat-head h2 {
+	color:white;
+	background-color:#054387;
+	margin:0% 0 0% 0;
+	padding:.2em .2em;
+	font-size: 1.4em;
+	font-family:"Myriad Pro";
+}
+
+
+#map-canvas {
+	position: absolute;
+	z-index:5;
+	display: block;
+	vertical-align: middle;
+	height: 60%;
+	width: 40%;
+}

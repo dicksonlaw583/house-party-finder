@@ -1,0 +1,46 @@
+<% content_for :head do %>
+	<link rel="stylesheet" href="/styles/homepage.css">
+<% end %>
+
+<% content_for :title, "Welcome!" %>
+
+<div class="featured-heading">
+	<h2>Sponsored</h2>
+</div>
+
+<% if @sponsored_parties.empty? %>
+	<p class = "featured-no-result">&nbsp;&nbsp;No parties are currently being sponsored.</p><br>
+<%else%>
+	<ul class="featured-list">
+		<% @sponsored_parties.each do |party| %>
+			<li><%= link_to party_url(party) do %><div class="featured-div">
+				<%= image_tag party.avatar.url(:thumbnail) %>
+				<h4><%= party.name %></h4>
+				<p><%= party.city %>, <%= party.province %></p>
+				<p>Attendance: <%= party.attendees.count %>/<%= party.capacity %></p>
+			</div><% end %></li>
+		<% end %>
+	</ul>
+	<p>
+		<%= will_paginate @sponsored_parties %>
+	</p>
+<% end %>
+<div class="featured-heading">				
+	<h2>Hot Parties</h2>
+</div>
+<% if @current_parties.empty? %>
+	<p class = "featured-no-result">&nbsp;&nbsp;Noone is attending any of the parties at the moment.</p><br>
+<%else%>
+	<ul class="featured-list">
+		
+		<% @current_parties.each do |party| %>
+			<li><%= link_to party_url(party) do %><div class="featured-div">
+				<%= image_tag party.avatar.url(:thumbnail) %>
+				<h4><%= party.name %></h4>
+				<p><%= party.city %>, <%= party.province %></p>
+				<p>Attendance: <%= party.attendees.count %>/<%= party.capacity %></p>
+			</div><% end %></li>
+		<% end %>
+	</ul>
+
+<% end %>
